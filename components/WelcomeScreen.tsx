@@ -98,16 +98,25 @@ export default function WelcomeScreen({ onComplete }: WelcomeScreenProps) {
             <ul className="space-y-4 text-center">
               {/* USER: Ganti nama anggota di bawah ini */}
               <motion.li variants={itemVariants} className="text-lg font-medium">
-                Nama Anggota 1
+                Rangga Dwi Satria
               </motion.li>
               <motion.li variants={itemVariants} className="text-lg font-medium">
-                Nama Anggota 2
+                Chandra Wirawan
               </motion.li>
               <motion.li variants={itemVariants} className="text-lg font-medium">
-                Nama Anggota 3
+                M. Iqbal Fatkhul Hakim
               </motion.li>
               <motion.li variants={itemVariants} className="text-lg font-medium">
-                Nama Anggota 4
+                Akhmad Kholil
+              </motion.li>
+              <motion.li variants={itemVariants} className="text-lg font-medium">
+                Destrian Adi Pamungkas
+              </motion.li>
+              <motion.li variants={itemVariants} className="text-lg font-medium">
+                Farhan Fadilah
+              </motion.li>
+              <motion.li variants={itemVariants} className="text-lg font-medium">
+                Muhammad Haikal Saifullah
               </motion.li>
             </ul>
           </motion.div>
