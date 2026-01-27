@@ -18,15 +18,23 @@ export const metadata: Metadata = {
   description: 'Aplikasi diagnosa mandiri ISPA menggunakan metode Certainty Factor',
 };
 
+import { ThemeProvider } from '@/components/ThemeProvider';
+import ThemeToggle from '@/components/ThemeToggle';
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <AppProvider>{children}</AppProvider>
+    <html lang="id" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300`}>
+        <ThemeProvider>
+          <AppProvider>
+            {children}
+            <ThemeToggle />
+          </AppProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

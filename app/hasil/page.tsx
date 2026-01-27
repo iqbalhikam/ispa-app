@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useApp } from '@/context/AppContext';
 import { useRouter } from 'next/navigation';
+import { generatePDF } from '@/utils/pdfGenerator';
 
 export default function HasilPage() {
   const { userData, diagnosisResults, resetAll } = useApp();
@@ -15,7 +16,9 @@ export default function HasilPage() {
   }, [diagnosisResults, router]);
 
   const handlePrint = () => {
-    window.print();
+    if (userData && diagnosisResults) {
+      generatePDF(userData, diagnosisResults);
+    }
   };
 
   const handleRestart = () => {
@@ -25,7 +28,7 @@ export default function HasilPage() {
   if (!diagnosisResults) return null;
 
   return (
-    <main className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8 font-sans transition-colors duration-300">
       <div className="max-w-4xl mx-auto print:max-w-none print:mx-0">
         <div className="space-y-8 animate-in zoom-in duration-500">
           {/* Header Result for Print */}
@@ -35,40 +38,35 @@ export default function HasilPage() {
           </div>
 
           {/* Patient Info Card */}
-          <div className="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-600 print:shadow-none print:border">
-            <h3 className="text-lg font-semibold text-slate-500 uppercase tracking-wider mb-4">Data Pasien</h3>
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl shadow-md border-l-4 border-blue-600 dark:border-blue-500 print:shadow-none print:border transition-colors duration-300">
+            <h3 className="text-lg font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Data Pasien</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div>
-                <span className="block text-xs text-slate-400">Nama</span>
-                <span className="text-xl font-bold text-slate-800">{userData.name}</span>
+                <span className="block text-xs text-slate-400 dark:text-slate-500">Nama</span>
+                <span className="text-xl font-bold text-slate-800 dark:text-slate-100">{userData.name}</span>
               </div>
               <div>
-                <span className="block text-xs text-slate-400">Umur</span>
-                <span className="text-xl font-bold text-slate-800">{userData.age} Tahun</span>
+                <span className="block text-xs text-slate-400 dark:text-slate-500">Umur</span>
+                <span className="text-xl font-bold text-slate-800 dark:text-slate-100">{userData.age} Tahun</span>
               </div>
               <div>
-                <span className="block text-xs text-slate-400">Jenis Kelamin</span>
-                <span className="text-xl font-bold text-slate-800">{userData.gender}</span>
+                <span className="block text-xs text-slate-400 dark:text-slate-500">Jenis Kelamin</span>
+                <span className="text-xl font-bold text-slate-800 dark:text-slate-100">{userData.gender}</span>
               </div>
             </div>
           </div>
 
           <div className="flex justify-between items-center print:hidden">
-            <h3 className="text-2xl font-bold text-slate-800">Hasil Analisa</h3>
+            <h3 className="text-2xl font-bold text-slate-800 dark:text-white">Hasil Analisa</h3>
             <div className="flex gap-3">
-              <button onClick={handleRestart} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors">
+              <button onClick={handleRestart} className="px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
                 Ulangi Diagnosa
               </button>
-              <button onClick={handlePrint} className="flex items-center gap-2 bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-900 transition-colors">
+              <button onClick={handlePrint} className="flex items-center gap-2 bg-slate-800 dark:bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-slate-900 dark:hover:bg-blue-500 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2-4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                Cetak / Simpan PDF
+                Unduh Laporan PDF
               </button>
             </div>
           </div>
@@ -78,28 +76,28 @@ export default function HasilPage() {
               {diagnosisResults.map((result, index) => (
                 <div
                   key={result.disease.id}
-                  className={`rounded-xl overflow-hidden shadow-lg border print:shadow-none print:border-black ${index === 0 ? 'border-blue-200 ring-2 ring-blue-500 ring-offset-2 print:ring-0' : 'border-slate-100'}`}>
-                  <div className={`${index === 0 ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white print:bg-none print:text-black print:border-b' : 'bg-white text-slate-800'} p-6`}>
+                  className={`rounded-xl overflow-hidden shadow-lg border print:shadow-none print:border-black ${index === 0 ? 'border-blue-200 dark:border-blue-800 ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-slate-900 print:ring-0' : 'border-slate-100 dark:border-slate-800'} transition-all duration-300`}>
+                  <div className={`${index === 0 ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white print:bg-none print:text-black print:border-b' : 'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100'} p-6`}>
                     <div className="flex justify-between items-center mb-2">
                       <h4 className="text-2xl font-bold">{result.disease.name}</h4>
-                      <span className={`text-2xl font-extrabold ${index === 0 ? 'text-white print:text-black' : 'text-blue-600 print:text-black'}`}>{result.percentage.toFixed(2)}%</span>
+                      <span className={`text-2xl font-extrabold ${index === 0 ? 'text-white print:text-black' : 'text-blue-600 dark:text-blue-400 print:text-black'}`}>{result.percentage.toFixed(2)}%</span>
                     </div>
-                    <p className={`text-sm ${index === 0 ? 'text-blue-100 print:text-black' : 'text-slate-500'}`}>
+                    <p className={`text-sm ${index === 0 ? 'text-blue-100 print:text-black' : 'text-slate-500 dark:text-slate-400'}`}>
                       Kode: {result.disease.code} | Tingkat Kepercayaan Sistem: {result.percentage.toFixed(2)}%
                     </p>
                   </div>
 
-                  <div className="bg-white p-6 space-y-4">
+                  <div className="bg-white dark:bg-slate-900 p-6 space-y-4">
                     <div>
-                      <h5 className="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-1">Deskripsi</h5>
-                      <p className="text-slate-700 leading-relaxed text-left">{result.disease.description}</p>
+                      <h5 className="text-sm font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Deskripsi</h5>
+                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-left">{result.disease.description}</p>
                     </div>
 
-                    <div className="bg-green-50 rounded-lg p-4 border border-green-100 print:bg-white print:border-slate-300">
-                      <h5 className="text-sm font-semibold uppercase tracking-wider text-green-700 mb-1 flex items-center gap-2 print:text-black">
+                    <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-100 dark:border-green-800 print:bg-white print:border-slate-300">
+                      <h5 className="text-sm font-semibold uppercase tracking-wider text-green-700 dark:text-green-400 mb-1 flex items-center gap-2 print:text-black">
                         <span className="text-lg">💊</span> Saran Pengobatan
                       </h5>
-                      <p className="text-slate-700 leading-relaxed text-left">{result.disease.treatment}</p>
+                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-left">{result.disease.treatment}</p>
                     </div>
                   </div>
                 </div>
