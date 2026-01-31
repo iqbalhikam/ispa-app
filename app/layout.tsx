@@ -29,12 +29,12 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300`}>
-        <ThemeProvider>
           <AppProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
             <ThemeToggle />
-          </AppProvider>
         </ThemeProvider>
+          </AppProvider>
       </body>
     </html>
   );

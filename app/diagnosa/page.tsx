@@ -78,7 +78,8 @@ export default function DignosaPage() {
                     value={inputs[symptom.id] ?? 0}
                     onChange={(e) => handleInputChange(symptom.id, e.target.value)}
                     className="block w-full pl-3 pr-10 py-2 text-base border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md shadow-sm text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:border-blue-400 transition-colors cursor-pointer">
-                    <option value="0">Tidak Yakin (0)</option>
+                    <option value="0">Tidak Tahu (0)</option>
+                    <option value="0.2">Tidak Yakin (0.2)</option>
                     <option value="0.4">Sedikit Yakin (0.4)</option>
                     <option value="0.6">Cukup Yakin (0.6)</option>
                     <option value="0.8">Yakin (0.8)</option>
